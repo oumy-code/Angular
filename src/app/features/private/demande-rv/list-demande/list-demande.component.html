@@ -8,23 +8,21 @@
         Toutes mes demandes
       </h2>
 
-      <button class="btn btn-success" routerLink="/form-demande" 
-                   routerLinkActive="active">
+      <button class="btn btn-success" routerLink="/form-demande" routerLinkActive="active">
         <i class="fas fa-plus"></i> Nouvelle demande
       </button>
     </div>
 
-    <!-- Filtres -->
     <div class="filters-section">
       <div class="filter-group">
         <label>
           <i class="fas fa-filter"></i> Filtrer par statut
         </label>
-        <select>
+        <select [(ngModel)]="filter.statut" (change)="onFilterStatutChange()" id="filterStatuts">
           <option value="">Tous</option>
-          <option value="EN_ATTENTE">En attente</option>
-          <option value="ACCEPTEE">Acceptée</option>
-          <option value="REFUSEE">Refusée</option>
+          <option value="En Attente">En attente</option>
+          <option value="Acceptée">Acceptée</option>
+          <option value="Refusée">Refusée</option>
         </select>
       </div>
 
@@ -32,22 +30,21 @@
         <label>
           <i class="fas fa-stethoscope"></i> Filtrer par spécialité
         </label>
-        <select>
-          <option value="tous">Toutes les spécialités</option>
-          <option value="cardiologue">Cardiologue</option>
-          <option value="radiologue">Radiologue</option>
-          <option value="pediatre">Pédiatre</option>
-          <option value="generaliste">Médecin généraliste</option>
+        <select [(ngModel)]="filter.specialite" (change)="onFilterSpecialiteChange()" id="filterSpecialites">
+          <option value="">Toutes les spécialités</option>
+          <option value="Cardiologie">Cardiologie</option>
+          <option value="Dermatologie">Dermatologie</option>
+          <option value="Neurologie">Neurologie</option>
+          <option value="Pédiatrie">Pédiatrie</option>
+          <option value="Psychiatrie">Psychiatrie</option>
         </select>
       </div>
     </div>
 
-    <!-- Tableau -->
-    <div class="table-container">
+    <div class="table-container" *ngIf="demandeResponse && demandeResponse.data && demandeResponse.data.length > 0; else noData">
       <table>
         <thead>
           <tr>
-           
             <th>SPÉCIALITÉ</th>
             <th>DATE</th>
             <th>HEURE</th>
@@ -55,44 +52,65 @@
             <th>ACTIONS</th>
           </tr>
         </thead>
-
         <tbody>
-          @for($demandes of demandes;track $demandes.id){
-             <tr>
-          
-            <td>{{$demandes.specialite}}</td>
-            <td>{{$demandes.dateDemande}}</td>
-            <td>{{$demandes.heure}}</td>
-          <td>
-  <span class="status-badge" 
-        [ngClass]="{
-          'status-pending': $demandes.statut === 'En Attente',
-          'status-accepted': $demandes.statut === 'Acceptée',
-          'status-rejected': $demandes.statut === 'Refusée'
-        }">
-    {{ $demandes.statut }}
-  </span>
-</td>
+          <tr *ngFor="let d of demandeResponse?.data">
+            <td>{{ d.specialite }}</td>
+            <td>{{ d.dateDemande }}</td>
+            <td>{{ d.heure }}</td>
             <td>
-             <button class="btn btn-info">Voir</button>
+              <span class="status-badge" 
+                    [ngClass]="{
+                      'status-pending': d.statut === 'En Attente',
+                      'status-accepted': d.statut === 'Acceptée',
+                      'status-rejected': d.statut === 'Refusée'
+                    }">
+                {{ d.statut }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-info">Voir</button>
             </td>
           </tr>
-          }@empty{
-            <tr>
-              <td colspan="5" class="no-data">
-                Aucune demande de rendez-vous trouvée.
-              </td>
-            </tr>
-          }
-         
-
-          
         </tbody>
       </table>
-    </div>
+
+      <!-- Pagination -->
+<div class="pagination-controls" *ngIf="demandeResponse">
+  <!-- Flèche gauche -->
+  <button class="pagination-btn"
+          [disabled]="demandeResponse.currentPage === 1"
+          (click)="goToPage(demandeResponse.currentPage - 1)">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <!-- Numéros de page -->
+  <div class="pagination">
+    <button *ngFor="let p of demandeResponse.pages"
+            class="pagination-btn"
+            [class.active]="p === demandeResponse.currentPage"
+            (click)="goToPage(p)">
+      {{ p }}
+    </button>
   </div>
 
-  <!-- Infos -->
+  <!-- Flèche droite -->
+  <button class="pagination-btn"
+          [disabled]="demandeResponse.currentPage === demandeResponse.totalPages"
+          (click)="goToPage(demandeResponse.currentPage + 1)">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+</div>
+
+
+    </div>
+
+    <ng-template #noData>
+      <div class="no-data">
+        Aucune demande de rendez-vous trouvée.
+      </div>
+    </ng-template>
+  </div>
+
   <div class="info-card">
     <h3><i class="fas fa-lightbulb"></i> Conseils</h3>
     <ul>

@@ -1,20 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DemandeListeRvModel, SpecialiteModel, StatutDemandeModel } from '../../models/demande.model';
+import { DemandeListeRvModel, DemandeListResponse, DemandeRvFilterModel } from '../../models/demande.model';
+import { MOCK_DEMANDES } from '../../../../mocks/demande.mock';
+import { DemandeService } from '../services/demande.service';
+import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../../environments/environment.development';
 
 
 @Component({
   selector: 'app-list-demande',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,FormsModule],
   templateUrl: './list-demande.component.html',
   styleUrls: ['./list-demande.component.css']
 })
-export class ListDemandeComponent {
-  demandes:DemandeListeRvModel[]=[
-    {id:1, dateDemande:'2024-06-01', heure:'10:00', statut:StatutDemandeModel.EnAttente,specialite:SpecialiteModel.Cardiologie},
-    {id:2, dateDemande:'2024-06-02', heure:'14:00', statut:StatutDemandeModel.Acceptee,specialite:SpecialiteModel.Dermatologie},
-    {id:3, dateDemande:'2024-06-03', heure:'09:00', statut:StatutDemandeModel.Refusee,specialite:SpecialiteModel.Neurologie},
-  ];
+export class ListDemandeComponent implements OnInit {
+  demandeResponse?:DemandeListResponse ;
+  filter:DemandeRvFilterModel={
+    specialite:'',
+    statut:'En Attente',
+    page:1,
+    size:environment.Limit,
+   
+  };
+
+  constructor(private demandeService: DemandeService) {
+   
+  }
+  ngOnInit() : void {
+    this.loadDemandes();
+}
+onFilterStatutChange() {
+  this.filter.page = 1;
+  this.loadDemandes();
+}
+private loadDemandes() {
+    this.demandeResponse = this.demandeService.getDemandesRV(this.filter);
+  }
+
+onFilterSpecialiteChange() {
+  this.filter.page = 1;
+  this.loadDemandes();
+}
+goToPage(page: number) {
+  if (!this.demandeResponse) return;
+
+  if (page < 1 || page > this.demandeResponse.totalPages) {
+    return;
+  }
+
+  this.filter.page = page;
+  this.loadDemandes();
+}
+
+// Ajoute cette fonction dans ton list-demande.component.ts
+
 }

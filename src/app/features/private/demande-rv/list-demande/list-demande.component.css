@@ -260,3 +260,39 @@ tbody tr:hover {
 .status-rejected {
     background-color: #dc3545; /* Rouge */
 }
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centre les boutons dans la ligne */
+  gap: 10px; /* espace entre flèches et numéros */
+}
+
+.pagination {
+  display: flex; /* important pour aligner les numéros horizontalement */
+  gap: 5px; /* espace entre les numéros */
+}
+
+.pagination-btn {
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  cursor: not-allowed;
+  color: #ccc;
+  background-color: #f5f5f5;
+}
