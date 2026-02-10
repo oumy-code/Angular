@@ -1,52 +1,56 @@
 <nav>
-    <div class="nav-container">
-        <div class="logo">
-            <i class="fas fa-heartbeat"></i>
-            MedicalCare
-        </div>
-        <ul class="nav-links">
-            <li>
-                <a routerLink="/private/dash" 
-                   routerLinkActive="active"
-                   [routerLinkActiveOptions]="{exact: false}">
-                    <i class="fas fa-chart-line"></i> Tableau de Bord
-                </a>
-            </li>
-            <li>
-                <a routerLink="/private/form-demande" 
-                   routerLinkActive="active">
-                    <i class="fas fa-plus-square"></i> Demande RV
-                </a>
-            </li>
-            <li>
-                <a routerLink="/private/list-demande" 
-                   routerLinkActive="active">
-                    <i class="fas fa-paper-plane"></i> Mes Demandes RV
-                </a>
-            </li>
-            <li>
-                <a routerLink="/private/mes-rv" 
-                   routerLinkActive="active">
-                    <i class="fas fa-calendar-check"></i> Mes RV
-                </a>
-            </li>
-        </ul>
-        
-        <!-- Menu utilisateur avec dropdown -->
-        <div class="user-menu" (click)="toggleDropdown()">
-            <div class="user-info">
-                <i class="fas fa-user-circle"></i>
-                <span class="user-name">Oumy</span>
-                <i class="fas fa-chevron-down" [class.rotated]="isDropdownOpen()"></i>
-            </div>
-            
-            <!-- Dropdown menu -->
-            <div class="dropdown-menu" *ngIf="isDropdownOpen()">
-                <a class="dropdown-item" (click)="logout($event)">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Déconnexion
-                </a>
-            </div>
-        </div>
+  <div class="nav-container">
+    <!-- Logo -->
+    <div class="logo">
+      <i class="fas fa-heartbeat"></i>
+      MedicalCare
     </div>
+
+    <!-- Liens de navigation -->
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/private/dash" 
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: false}">
+          <i class="fas fa-chart-line"></i> Tableau de Bord
+        </a>
+      </li>
+      <li>
+        <a routerLink="/private/form-demande" routerLinkActive="active">
+          <i class="fas fa-plus-square"></i> Demande RV
+        </a>
+      </li>
+      <li>
+        <a routerLink="/private/list-demande" routerLinkActive="active">
+          <i class="fas fa-paper-plane"></i> Mes Demandes RV
+        </a>
+      </li>
+      <li>
+        <a routerLink="/private/mes-rv" routerLinkActive="active">
+          <i class="fas fa-calendar-check"></i> Mes RV
+        </a>
+      </li>
+    </ul>
+
+    <!-- Menu utilisateur -->
+    <div class="user-menu" (click)="toggleDropdown($event)">
+      <div class="user-info">
+        <i class="fas fa-user-circle avatar"></i>
+        <span class="user-name">Oumy</span>
+        <i class="fas fa-chevron-down chevron" [class.open]="isDropdownOpen()"></i>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="dropdown" *ngIf="isDropdownOpen()">
+        <a routerLink="/private/settings" class="dropdown-item">
+          <i class="fas fa-cog"></i> Paramètres
+        </a>
+        <div class="divider"></div>
+        <button class="dropdown-item logout" (click)="logout($event)">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+      </div>
+    </div> <!-- fin user-menu -->
+
+  </div> <!-- fin nav-container -->
 </nav>

@@ -15,6 +15,7 @@ nav {
     align-items: center;
 }
 
+
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
@@ -22,6 +23,112 @@ nav {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+/* =====================
+   MENU UTILISATEUR
+===================== */
+.user-menu {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Ligne affichant l'avatar + nom + chevron */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  transition: background 0.3s;
+}
+
+.user-info:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.avatar {
+  font-size: 1.8rem;
+  color: #000000; /* si fond nav coloré */
+}
+
+.user-name {
+  font-weight: 600;
+  color: #020101;
+}
+
+.chevron {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+/* Rotation de la flèche quand dropdown ouvert */
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  width: 180px;
+  background: white;
+  border-radius: 10px;
+  color: #333;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  overflow: hidden;
+  animation: fadeSlide 0.2s ease-out;
+  z-index: 1000;
+}
+
+/* Animation dropdown */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Items dropdown */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #111112;
+}
+
+/* Séparateur entre paramètres et déconnexion */
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 0.2rem 0;
+}
+
+/* Déconnexion spécifique */
+.logout {
+  color: #d32f2f;
+}
+
+.logout:hover {
+  background: rgba(211, 47, 47, 0.08);
 }
 
 .nav-links {

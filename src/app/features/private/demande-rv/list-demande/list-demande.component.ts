@@ -20,8 +20,7 @@ export class ListDemandeComponent implements OnInit {
   filter:DemandeRvFilterModel={
     specialite:'',
     statut:'En Attente',
-    page:1,
-    size:environment.Limit,
+   
    
   };
 
