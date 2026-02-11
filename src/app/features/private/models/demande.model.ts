@@ -11,7 +11,7 @@
     Psychiatrie = 'Psychiatrie',
 }*/
 type SpecialiteModel = 'Cardiologie' | 'Dermatologie' | 'Neurologie' | 'Pédiatrie' | 'Psychiatrie'|'';
-type StatutDemandeModel = 'En Attente' | 'Acceptée' | 'Refusée';
+export type StatutDemandeModel = 'En Attente' | 'Acceptée' | 'Refusée';
 
 
 

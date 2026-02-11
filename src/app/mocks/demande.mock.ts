@@ -36,4 +36,11 @@ export const MOCK_DEMANDES :DemandeListeRvModel[] = [
         statut: "En Attente",
         specialite: "Cardiologie" 
     },
+        {
+        id: 6,
+        dateDemande: '2024-06-04',
+        heure: '11:00',
+        statut: "Acceptée",
+        specialite: "Pédiatrie"
+    },
 ];

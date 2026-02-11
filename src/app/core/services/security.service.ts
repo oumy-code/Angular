@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { UserLoginRequest, UserLoginResponse } from '../models/user.model';
 import { MOCK_USERS } from '@mocks';
 
@@ -12,7 +13,8 @@ export class SecurityService {
 
   constructor() {}
 
-  login(userLoginRequest: UserLoginRequest): UserLoginResponse | null {
+  // 🔹 Login maintenant renvoie un Observable
+  login(userLoginRequest: UserLoginRequest): Observable<UserLoginResponse | null> {
     const users = [...MOCK_USERS];
 
     const user = users.find(
@@ -22,7 +24,7 @@ export class SecurityService {
     );
 
     if (!user) {
-      return null;
+      return of(null); // on renvoie un Observable avec null
     }
 
     const userLoginResponse: UserLoginResponse = {
@@ -32,30 +34,28 @@ export class SecurityService {
 
     this.saveLocalStorage(userLoginResponse);
 
-    return userLoginResponse;
+    return of(userLoginResponse); // on renvoie un Observable
   }
 
   private saveLocalStorage(userLoginResponse: UserLoginResponse): void {
     localStorage.setItem(this.TOKEN_KEY, userLoginResponse.token!);
-    localStorage.setItem(
-      this.USER_KEY,
-      JSON.stringify(userLoginResponse.user)
-    );
+    localStorage.setItem(this.USER_KEY, JSON.stringify(userLoginResponse.user));
   }
-  get currentUser(): UserLoginResponse | null {
-  
+
+  // 🔹 Récupération de l'utilisateur connecté en Observable
+  getCurrentUser(): Observable<UserLoginResponse | null> {
     const userJson = localStorage.getItem(this.USER_KEY);
-    if ( userJson) {
-      return {
-       
-        user: JSON.parse(userJson)
-      };
+    if (userJson) {
+      return of({ user: JSON.parse(userJson) });
     }
-    return null;
+    return of(null);
   }
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);
+
+  // 🔹 Vérification de l'authentification en Observable
+  isAuthenticated(): Observable<boolean> {
+    return of(!!localStorage.getItem(this.TOKEN_KEY));
   }
+
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);

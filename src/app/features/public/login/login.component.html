@@ -8,255 +8,183 @@
       <h2>Créer un compte patient</h2>
       <p class="subtitle">Remplissez vos informations pour créer votre compte</p>
     </div>
+    <div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
 
     <!-- Formulaire -->
-    <form class="patient-form">
-      
-      <!-- Section Informations Personnelles -->
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="patient-form">
+
+      <!-- Informations personnelles -->
       <div class="form-section">
-        <h3 class="section-title">
-          <i class="fas fa-user"></i>
-          Informations personnelles
-        </h3>
+        <h3>Informations personnelles</h3>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="prenom">
-              Prénom <span class="required">*</span>
-            </label>
-            <input 
-              type="text" 
-              id="prenom" 
-              placeholder="Ex: Moussa">
+            <label>Prénom <span class="required">*</span></label>
+            <input type="text" formControlName="prenom"
+              [ngClass]="{
+                'valid-input': patientForm.get('prenom')?.valid && patientForm.get('prenom')?.touched,
+                'invalid-input': patientForm.get('prenom')?.invalid && patientForm.get('prenom')?.touched
+              }">
+            <div class="error-message" *ngIf="patientForm.get('prenom')?.invalid && patientForm.get('prenom')?.touched">
+              Prénom requis
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="nom">
-              Nom <span class="required">*</span>
-            </label>
-            <input 
-              type="text" 
-              id="nom" 
-              placeholder="Ex: Diop">
+            <label>Nom <span class="required">*</span></label>
+            <input type="text" formControlName="nom"
+              [ngClass]="{
+                'valid-input': patientForm.get('nom')?.valid && patientForm.get('nom')?.touched,
+                'invalid-input': patientForm.get('nom')?.invalid && patientForm.get('nom')?.touched
+              }">
+            <div class="error-message" *ngIf="patientForm.get('nom')?.invalid && patientForm.get('nom')?.touched">
+              Nom requis
+            </div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="dateNaissance">
-              Date de naissance <span class="required">*</span>
-            </label>
-            <input 
-              type="date" 
-              id="dateNaissance">
+            <label>Date de naissance <span class="required">*</span></label>
+            <input type="date" formControlName="dateNaissance"
+              [ngClass]="{
+                'valid-input': patientForm.get('dateNaissance')?.valid && patientForm.get('dateNaissance')?.touched,
+                'invalid-input': patientForm.get('dateNaissance')?.invalid && patientForm.get('dateNaissance')?.touched
+              }">
+            <div class="error-message" *ngIf="patientForm.get('dateNaissance')?.invalid && patientForm.get('dateNaissance')?.touched">
+              Date de naissance requise
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="sexe">
-              Sexe <span class="required">*</span>
-            </label>
-            <select id="sexe">
+            <label>Sexe <span class="required">*</span></label>
+            <select formControlName="sexe"
+              [ngClass]="{
+                'valid-input': patientForm.get('sexe')?.valid && patientForm.get('sexe')?.touched,
+                'invalid-input': patientForm.get('sexe')?.invalid && patientForm.get('sexe')?.touched
+              }">
               <option value="">Sélectionnez</option>
               <option value="M">Homme</option>
               <option value="F">Femme</option>
             </select>
+            <div class="error-message" *ngIf="patientForm.get('sexe')?.invalid && patientForm.get('sexe')?.touched">
+              Sélection du sexe requise
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="adresse">
-            Adresse
-          </label>
-          <input 
-            type="text" 
-            id="adresse" 
+          <label>Adresse</label>
+          <input type="text" formControlName="adresse"
+            [ngClass]="{
+              'valid-input': patientForm.get('adresse')?.value,
+              'invalid-input': false
+            }"
             placeholder="Ex: Liberté 6, Dakar">
         </div>
       </div>
 
-      <!-- Section Contact -->
+      <!-- Coordonnées -->
       <div class="form-section">
-        <h3 class="section-title">
-          <i class="fas fa-phone"></i>
-          Coordonnées
-        </h3>
+        <h3>Coordonnées</h3>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="telephone">
-              Téléphone <span class="required">*</span>
-            </label>
-            <input 
-              type="tel" 
-              id="telephone" 
+            <label>Téléphone <span class="required">*</span></label>
+            <input type="tel" formControlName="telephone"
+              [ngClass]="{
+                'valid-input': patientForm.get('telephone')?.valid && patientForm.get('telephone')?.touched,
+                'invalid-input': patientForm.get('telephone')?.invalid && patientForm.get('telephone')?.touched
+              }"
               placeholder="Ex: 77 123 45 67">
+            <div class="error-message" *ngIf="patientForm.get('telephone')?.invalid && patientForm.get('telephone')?.touched">
+              Téléphone requis
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="email">
-              Email <span class="required">*</span>
-            </label>
-            <input 
-              type="email" 
-              id="email" 
+            <label>Email <span class="required">*</span></label>
+            <input type="email" formControlName="email"
+              [ngClass]="{
+                'valid-input': patientForm.get('email')?.valid && patientForm.get('email')?.touched,
+                'invalid-input': patientForm.get('email')?.invalid && patientForm.get('email')?.touched
+              }"
               placeholder="Ex: email@example.com">
+            <div class="error-message" *ngIf="patientForm.get('email')?.invalid && patientForm.get('email')?.touched">
+              Email invalide
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Section Mot de passe -->
+      <!-- Sécurité -->
       <div class="form-section">
-        <h3 class="section-title">
-          <i class="fas fa-lock"></i>
-          Sécurité
-        </h3>
+        <h3>Sécurité</h3>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="password">
-              Mot de passe <span class="required">*</span>
-            </label>
-            <input 
-              type="password" 
-              id="password" 
+            <label>Mot de passe <span class="required">*</span></label>
+            <input type="password" formControlName="password"
+              [ngClass]="{
+                'valid-input': patientForm.get('password')?.valid && patientForm.get('password')?.touched,
+                'invalid-input': patientForm.get('password')?.invalid && patientForm.get('password')?.touched
+              }"
               placeholder="Minimum 8 caractères">
+            <div class="error-message" *ngIf="patientForm.get('password')?.invalid && patientForm.get('password')?.touched">
+              Minimum 8 caractères
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="confirmPassword">
-              Confirmer le mot de passe <span class="required">*</span>
-            </label>
-            <input 
-              type="password" 
-              id="confirmPassword" 
+            <label>Confirmer le mot de passe <span class="required">*</span></label>
+            <input type="password" formControlName="confirmPassword"
+              [ngClass]="{
+                'valid-input': patientForm.get('confirmPassword')?.valid && patientForm.get('confirmPassword')?.touched,
+                'invalid-input': patientForm.get('confirmPassword')?.invalid && patientForm.get('confirmPassword')?.touched
+              }"
               placeholder="Retapez votre mot de passe">
+            <div class="error-message" *ngIf="patientForm.get('confirmPassword')?.hasError('mismatch') && patientForm.get('confirmPassword')?.touched">
+              Les mots de passe ne correspondent pas
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Section Informations Médicales -->
+      <!-- Informations médicales optionnelles -->
       <div class="form-section">
-        <h3 class="section-title">
-          <i class="fas fa-heartbeat"></i>
-          Informations médicales (optionnel)
-        </h3>
+        <h3>Informations médicales (optionnel)</h3>
 
         <div class="form-group">
-          <label for="groupeSanguin">
-            Groupe sanguin
-          </label>
-          <select id="groupeSanguin">
-            <option value="">Sélectionnez</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-          </select>
+          <label>Allergies connues</label>
+          <textarea formControlName="allergies" rows="3" placeholder="Ex: Pénicilline, Pollen..."></textarea>
         </div>
 
         <div class="form-group">
-          <label for="allergies">
-            Allergies connues
-          </label>
-          <textarea 
-            id="allergies" 
-            rows="3"
-            placeholder="Ex: Pénicilline, Pollen..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="antecedents">
-            Antécédents médicaux
-          </label>
-          <textarea 
-            id="antecedents" 
-            rows="3"
-            placeholder="Ex: Diabète, Hypertension..."></textarea>
+          <label>Antécédents médicaux</label>
+          <textarea formControlName="antecedents" rows="3" placeholder="Ex: Diabète, Hypertension..."></textarea>
         </div>
       </div>
 
-      <!-- Contact d'urgence -->
+      <!-- Conditions -->
       <div class="form-section">
-        <h3 class="section-title">
-          <i class="fas fa-phone-square-alt"></i>
-          Contact d'urgence
-        </h3>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="contactUrgenceNom">
-              Nom du contact
-            </label>
-            <input 
-              type="text" 
-              id="contactUrgenceNom" 
-              placeholder="Ex: Fatou Diop">
-          </div>
-
-          <div class="form-group">
-            <label for="contactUrgenceTel">
-              Téléphone du contact
-            </label>
-            <input 
-              type="tel" 
-              id="contactUrgenceTel" 
-              placeholder="Ex: 77 987 65 43">
+        <div class="form-group">
+          <input type="checkbox" formControlName="termes">
+          <label>J'accepte les conditions <span class="required">*</span></label>
+          <div class="error-message" *ngIf="patientForm.get('termes')?.invalid && patientForm.get('termes')?.touched">
+            Vous devez accepter les conditions
           </div>
         </div>
-
-        <div class="form-group">
-          <label for="contactUrgenceRelation">
-            Relation
-          </label>
-          <select id="contactUrgenceRelation">
-            <option value="">Sélectionnez</option>
-            <option value="conjoint">Conjoint(e)</option>
-            <option value="parent">Parent</option>
-            <option value="enfant">Enfant</option>
-            <option value="frere-soeur">Frère/Sœur</option>
-            <option value="ami">Ami(e)</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
       </div>
 
-      <!-- Conditions d'utilisation -->
-      <div class="form-section">
-        <div class="checkbox-group">
-          <input type="checkbox" id="termes">
-          <label for="termes">
-            J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a> <span class="required">*</span>
-          </label>
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="newsletter">
-          <label for="newsletter">
-            Je souhaite recevoir des informations sur les services de santé
-          </label>
-        </div>
-      </div>
-
-      <!-- Boutons -->
+      <!-- Bouton -->
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">
-          <i class="fas fa-user-plus"></i>
+        <button type="submit" [disabled]="patientForm.invalid" class="btn btn-primary">
           Créer mon compte
         </button>
-        <button type="button" class="btn btn-secondary">
-          <i class="fas fa-times"></i>
-          Annuler
-        </button>
       </div>
 
-      <!-- Lien connexion -->
-      <div class="login-link">
-        Vous avez déjà un compte ? <a href="#">Se connecter</a>
-      </div>
     </form>
   </div>
 </div>

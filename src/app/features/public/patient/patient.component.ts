@@ -1,37 +1,56 @@
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserLoginRequest } from 'src/app/core/models/user.model';
 import { SecurityService } from 'src/app/core/services/security.service';
 
 @Component({
   selector: 'app-patient',
-  imports: [RouterLink,FormsModule,CommonModule,JsonPipe],
   standalone: true,
+  imports: [RouterLink, FormsModule, CommonModule, JsonPipe],
   templateUrl: './patient.component.html',
-  styleUrl: './patient.component.css'
+  styleUrls: ['./patient.component.css']
 })
 export class PatientComponent {
-  userLogin:UserLoginRequest={
-    email:'',
-    password:''
+
+  userLogin: UserLoginRequest = {
+    email: '',
+    password: ''
   };
-  constructor(private securityService: SecurityService,private router:Router) { }
-  onLogin(){
-   
-    const loginResult = this.securityService.login(this.userLogin);
-    console.log('Login attempted with:', this.userLogin);
-    if (loginResult) {
-      this.router.navigate(['/private']);
-      console.log('Login successful:', loginResult);
-      // Ici, tu peux ajouter la logique pour rediriger l'utilisateur ou stocker le token
-    } else {
 
-      console.log('Login failed: Invalid email or password');
-      // Ici, tu peux ajouter la logique pour afficher un message d'erreur à l'utilisateur
+  loginError: boolean = false; // pour afficher message erreur
+
+  constructor(
+    private securityService: SecurityService,
+    private router: Router
+  ) {}
+
+  onLogin(form: NgForm) {
+
+    // Empêche l'envoi si formulaire invalide
+    if (form.invalid) {
+      return;
     }
-    // Ici, tu peux ajouter la logique pour appeler ton service de sécurité
-  } 
 
+    // 🔹 Utilisation de l'observable avec subscribe
+    this.securityService.login(this.userLogin).subscribe({
+      next: loginResult => {
+        if (loginResult) {
+          this.loginError = false; // reset erreur
+          console.log('Login successful:', loginResult);
+          this.router.navigate(['/private']); // redirection
+        } else {
+          console.log('Login failed: Invalid email or password');
+          this.loginError = true; // active message erreur
+        }
+      },
+      error: err => {
+        console.error('Erreur login:', err);
+        this.loginError = true;
+      }
+    });
+
+    console.log('Login attempted with:', this.userLogin);
+  }
 }

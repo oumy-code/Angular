@@ -1,0 +1,10 @@
+<div class="filter-group">
+  <label>
+    <i class="fas fa-filter"></i> Filtrer par statut
+  </label>
+  <select [(ngModel)]="selectedStatut" (change)="onChange()">
+    <option *ngFor="let s of statuts" [value]="s">
+      {{ s === '' ? 'Tous' : s }}
+    </option>
+  </select>
+</div>

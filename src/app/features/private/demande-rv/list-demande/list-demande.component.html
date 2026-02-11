@@ -14,18 +14,13 @@
     </div>
 
     <div class="filters-section">
-      <div class="filter-group">
-        <label>
-          <i class="fas fa-filter"></i> Filtrer par statut
-        </label>
-        <select [(ngModel)]="filter.statut" (change)="onFilterStatutChange()" id="filterStatuts">
-          <option value="">Tous</option>
-          <option value="En Attente">En attente</option>
-          <option value="Acceptée">Acceptée</option>
-          <option value="Refusée">Refusée</option>
-        </select>
-      </div>
-
+      <!-- Filtre statut via composant standalone -->
+      <app-status-filter
+        [selectedStatut]="filter.statut ?? ''"
+        (statutChange)="onFilterStatutChange($event)">
+      </app-status-filter>
+      
+      <!-- Filtre spécialité toujours en HTML simple -->
       <div class="filter-group">
         <label>
           <i class="fas fa-stethoscope"></i> Filtrer par spécialité
@@ -74,33 +69,14 @@
         </tbody>
       </table>
 
-      <!-- Pagination -->
-<div class="pagination-controls" *ngIf="demandeResponse">
-  <!-- Flèche gauche -->
-  <button class="pagination-btn"
-          [disabled]="demandeResponse.currentPage === 1"
-          (click)="goToPage(demandeResponse.currentPage - 1)">
-    <i class="fas fa-chevron-left"></i>
-  </button>
-
-  <!-- Numéros de page -->
-  <div class="pagination">
-    <button *ngFor="let p of demandeResponse.pages"
-            class="pagination-btn"
-            [class.active]="p === demandeResponse.currentPage"
-            (click)="goToPage(p)">
-      {{ p }}
-    </button>
-  </div>
-
-  <!-- Flèche droite -->
-  <button class="pagination-btn"
-          [disabled]="demandeResponse.currentPage === demandeResponse.totalPages"
-          (click)="goToPage(demandeResponse.currentPage + 1)">
-    <i class="fas fa-chevron-right"></i>
-  </button>
-</div>
-
+      <!-- Pagination via composant standalone -->
+      <app-pagination
+        *ngIf="demandeResponse"
+        [currentPage]="demandeResponse.currentPage"
+        [totalPages]="demandeResponse.totalPages"
+        [pages]="demandeResponse.pages"
+        (pageChange)="goToPage($event)">
+      </app-pagination>
 
     </div>
 
